@@ -35,14 +35,37 @@ class LoginSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.ModelSerializer):
     role_label = serializers.ReadOnlyField()
+    profile_data = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = [
             'id', 'email', 'name', 'role', 'role_label',
-            'phone', 'avatar_url', 'created_at',
+            'phone', 'avatar_url', 'created_at', 'profile_data',
         ]
         read_only_fields = ['id', 'created_at']
+
+    def get_profile_data(self, obj):
+        if obj.role == 'worker' and hasattr(obj, 'worker_profile'):
+            return {
+                'employee_id': obj.worker_profile.employee_id,
+                'designation': obj.worker_profile.designation,
+                'daily_rate': str(obj.worker_profile.daily_rate),
+                'joining_date': obj.worker_profile.joining_date,
+            }
+        elif obj.role == 'site_manager' and hasattr(obj, 'site_manager_profile'):
+            return {
+                'employee_id': obj.site_manager_profile.employee_id,
+                'department': obj.site_manager_profile.department,
+                'years_of_experience': obj.site_manager_profile.years_of_experience,
+            }
+        elif obj.role == 'admin' and hasattr(obj, 'admin_profile'):
+            return {
+                'employee_id': obj.admin_profile.employee_id,
+                'department': obj.admin_profile.department,
+                'admin_level': obj.admin_profile.admin_level,
+            }
+        return None
 
 
 class RegisterSerializer(serializers.ModelSerializer):

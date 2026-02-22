@@ -8,6 +8,7 @@ import 'features/workforce/presentation/pages/workforce_page.dart';
 import 'features/inventory/presentation/pages/inventory_page.dart';
 import 'features/payroll/presentation/pages/payroll_page.dart';
 import 'features/analytics/presentation/pages/analytics_page.dart';
+import 'features/profile/presentation/pages/profile_page.dart';
 
 /// Shell scaffold hosting the bottom navigation bar + nested routes.
 class AppShell extends StatelessWidget {
@@ -127,6 +128,14 @@ GoRouter buildRouter(AuthBloc authBloc) {
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
           child: const LoginPage(),
+          transitionsBuilder: _fadeSlideTransition,
+        ),
+      ),
+      GoRoute(
+        path: '/profile',
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const ProfilePage(),
           transitionsBuilder: _fadeSlideTransition,
         ),
       ),

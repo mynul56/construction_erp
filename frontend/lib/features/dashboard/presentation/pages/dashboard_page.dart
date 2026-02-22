@@ -1,9 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../core/animations/animation_utils.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/loading_shimmer.dart';
+import '../../../profile/presentation/pages/profile_page.dart';
 import '../../domain/entities/dashboard_stats_entity.dart';
 import '../bloc/dashboard_bloc.dart';
 import '../bloc/dashboard_event_state.dart';
@@ -250,12 +252,9 @@ class _Header extends StatelessWidget {
           const SizedBox(width: 12),
           // Avatar
           Container(
-            width: 44,
-            height: 44,
+            width: 48,
+            height: 48,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: AppColors.cyanGradient,
-              ),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
@@ -265,13 +264,34 @@ class _Header extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Center(
-              child: Text(
-                'A',
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 18,
-                  color: AppColors.navyDeep,
+            child: ClipOval(
+              child: Material(
+                color: Colors.transparent,
+                child: Ink(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: AppColors.cyanGradient,
+                    ),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const ProfilePage(),
+                        ),
+                      );
+                    },
+                    child: const Center(
+                      child: Text(
+                        'A',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18,
+                          color: AppColors.navyDeep,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

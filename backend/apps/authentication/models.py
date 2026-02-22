@@ -3,6 +3,7 @@ Authentication app — Custom User model.
 """
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
+from core.models import BaseModel
 import uuid
 
 
@@ -63,3 +64,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def role_label(self):
         return self.get_role_display()
+
+
+class AdminProfile(BaseModel):
+    """Extended profile for admin users."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='admin_profile')
+    employee_id = models.CharField(max_length=20, unique=True)
+    department = models.CharField(max_length=100, blank=True)
+    admin_level = models.CharField(max_length=50, blank=True, help_text='e.g., Super Admin, HR Admin')
+
+    def __str__(self):
+        return f'{self.user.name} - {self.admin_level or "Admin"}'

@@ -6,6 +6,18 @@ from core.models import BaseModel
 from apps.authentication.models import User
 
 
+class SiteManagerProfile(BaseModel):
+    """Extended profile for site managers."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='site_manager_profile')
+    employee_id = models.CharField(max_length=20, unique=True)
+    department = models.CharField(max_length=100, blank=True)
+    years_of_experience = models.PositiveIntegerField(default=0)
+    certifications = models.TextField(blank=True, help_text='Comma-separated list')
+
+    def __str__(self):
+        return f'{self.user.name} - Site Manager'
+
+
 class ProjectStatus(models.TextChoices):
     PLANNING = 'planning', 'Planning'
     IN_PROGRESS = 'in_progress', 'In Progress'
